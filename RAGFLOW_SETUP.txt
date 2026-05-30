@@ -1,0 +1,80 @@
+================================================================================
+RAGFlow 本地部署与应用对接（与申请书「Docker 容器化」「FAISS/向量检索」工程侧一致）
+================================================================================
+
+一、环境要求（官方）
+  - x86_64，CPU ≥ 4 核，内存 ≥ 16 GB，磁盘 ≥ 50 GB
+  - Docker ≥ 24.0.0，Docker Compose ≥ v2.26.1
+  - 官方预构建镜像主要为 x86；ARM 需自行按官方文档构建镜像。
+  文档：https://ragflow.io/docs/
+
+二、用 Docker 启动 RAGFlow（推荐步骤）
+  1) 克隆仓库
+     git clone https://github.com/infiniflow/ragflow.git
+     cd ragflow
+
+  2) 与镜像版本对齐（可选但强烈建议，避免 entrypoint 与镜像不一致）
+     git checkout -f v0.25.0
+     （其他版本见 https://github.com/infiniflow/ragflow/releases）
+
+  3) 进入 docker 目录并启动
+     cd docker
+     docker compose -f docker-compose.yml up -d
+
+     使用 GPU 加速 DeepDoc 时，按官方 README 在 .env 中配置 DEVICE=gpu 后再 up。
+
+  4) 浏览器访问
+     默认 Web 端口一般为 80（若冲突可在 docker/.env 或 compose 中改 SVR_HTTP_PORT 等变量后重启容器）。
+
+  5) 首次使用
+     - 在 RAGFlow 界面注册管理员账号
+     - 创建知识库并上传指南/文献/脱敏病历等
+     - 创建「聊天助手 / Chat」，绑定知识库与大模型，保存后从界面或 API 文档中获取 chat_id
+
+三、与本 Streamlit 项目对接
+  1) API Key：在 RAGFlow 管理界面生成 API Key（具体入口以当前版本界面为准）。
+  2) Chat ID：对应已配置好知识库与模型的会话/助手 ID（你当前代码里使用的即为此 ID）。
+  3) Base URL：本机一般为 http://localhost 或 http://127.0.0.1；若改了映射端口，需带端口，例如 http://localhost:9380（以你实际 Nginx/网关暴露为准）。
+  4) 强烈建议通过环境变量注入密钥，勿提交到 git：
+     set RAGFLOW_BASE_URL=http://localhost
+     set RAGFLOW_CHAT_ID=你的chat_id
+     set RAGFLOW_API_KEY=你的key
+
+四、申请书技术路线与仓库模块对应关系（便于写中期报告）
+  (1) 中文少样本数据集：data/DATASET_PLACEHOLDER.txt、data/few_shot_examples.json（可替换为 RAGCare-QA / cMedQA2 子集）。
+  (2) 术语归一化：medical_preprocess.py（应用层轻量归一，深度检索仍在 RAGFlow）。
+  (3) 少样本 ICL：few_shot.py + fs_trace_rag.py。
+  (4) 分级证据链：ragflow_client.build_prompt 中的 JSON 约束 + chat_page 展示。
+  (5) 检索与向量库：RAGFlow Docker 内完成；本仓库通过 HTTP 调用 /api/v1/chats/{id}/completions。
+
+五、若请求报错与 temperature 相关
+  部分版本接口可能忽略或拒绝 temperature 字段。请在侧栏选择「由 RAGFlow 助手配置决定」，
+  或在 ragflow_client.call_ragflow 调用处传入 temperature=None。
+
+六、后续研究阶段（对比学习 / 伪标签扩充）
+  申请书中的对比学习、伪标签扩充属于离线训练与检索器优化，可在独立 Python 环境中使用 PyTorch + 自建向量库实验；
+  与当前「RAGFlow 编排 + 应用层提示与解析」并行，不冲突。
+
+七、登录后首页为空时，按界面操作顺序（与你当前截图一致）
+  1) 建知识库
+     顶部点「知识库」→ 创建知识库 → 填写名称（如：临床指南与文献）→ 选择解析器/分块策略（医疗 PDF 可先用默认或 DeepDoc，按官方说明调优）→ 选择嵌入模型（Embedding，需与系统已配置的模型一致）→ 保存。
+
+  2) 上传并入库
+     进入该知识库 → 上传文件（指南 PDF、核心期刊摘要、脱敏病历等）→ 等待解析与向量化完成（列表中状态变为可用/成功，不同版本文案略有差异）。未完成入库时不要指望检索稳定。
+
+  3) 建「聊天」并绑定知识库与大模型
+     顶部点「聊天」→ 新建聊天助手（或对话应用）→ 在配置里勾选上一步的知识库 → 选择对话所用大模型（若列表为空，需先在 RAGFlow 的系统设置里配置模型供应商与 API Key，如兼容 OpenAI 的地址与密钥）→ 保存。
+     提示：可在系统提示词（System prompt）中强调「回答须基于检索片段、尽量引用来源」，与 Streamlit 侧 JSON 结构化要求互补。
+
+  4) 取得 Chat ID
+     打开该聊天助手的详情/编辑页，从浏览器地址栏 URL 或页面上的「API / 复制 ID」类入口复制助手 ID（一串字母数字，即代码中的 RAGFLOW_CHAT_ID）。不同版本位置不同，可搜「chat id」「会话 id」。
+
+  5) 取得 API Key
+     点头像或「设置 / 个人中心 / API」等菜单，创建并复制 API Key（即 RAGFLOW_API_KEY）。勿泄露、勿提交到 git。
+
+  6) 填回小溯医生 Streamlit 侧栏
+     Base URL：与浏览器访问 RAGFlow 的根地址一致（多为 http://localhost，若带端口则一并写上）。
+     将 Chat ID、API Key 填入侧栏或环境变量后，在问诊页点击「开始分析」即可走 RAGFlow 检索 + 生成。
+
+  7) 可选：搜索 / 智能体
+     「搜索」用于单独试检索；「智能体」适合做复杂流程。当前 Streamlit 对接的是「聊天」类 completions 接口，先把「知识库 + 聊天」跑通即可。
