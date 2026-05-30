@@ -135,10 +135,11 @@ def _extract_symptom_terms(query: str) -> List[str]:
     symptom_lexicon = [
         "咳嗽", "咳痰", "黄痰", "痰黄", "咳黄痰", "咯血",
         "呼吸困难", "气短", "胸闷", "胸痛",
-        "腹痛", "肚子疼", "肚子痛", "胃痛", "腹泻", "便秘", "恶心", "呕吐",
+        "海鲜", "啤酒", "饮食不洁", "食物中毒", "腹痛", "肚子疼", "肚子痛", "胃痛", "腹泻", "便秘", "恶心", "呕吐",
         "皮疹", "瘙痒", "痒", "脸痒", "面部瘙痒", "红肿", "脸肿", "面部红肿", "荨麻疹", "过敏",
         "尿频", "尿急", "尿痛", "血尿",
         "头痛", "头晕", "意识障碍", "晕厥",
+        "崴脚", "脚崴", "脚踝痛", "脚踝肿", "踝关节痛", "踝关节肿", "踝关节扭伤", "扭伤", "不能负重", "外伤",
         "关节痛", "关节肿",
         "黄疸",
         "发热", "发烧", "寒战",
@@ -368,6 +369,8 @@ def _filter_by_symptom_terms(
     scored: List[Tuple[float, Dict[str, Any]]],
     symptom_terms: List[str],
     min_score: float = 0.08,
+    query: str = "",
+    gender: str = "",
 ) -> List[Tuple[float, Dict[str, Any]]]:
     """
     仅保留与症状词有直接命中的证据；并做最低相关性阈值过滤，
@@ -378,10 +381,17 @@ def _filter_by_symptom_terms(
     out: List[Tuple[float, Dict[str, Any]]] = []
     # 如果主诉中包含更具体的核心呼吸道症状，则强制至少命中其一，避免因“无发热”等否定词误入。
     core_terms = [t for t in symptom_terms if t in ["咳嗽", "咳痰", "黄痰", "痰黄", "咳黄痰", "咯血"]]
+    gender_text = str(gender).strip().lower()
+    gynecology_terms = ["月经", "阴道", "妊娠", "孕", "盆腔", "妇科", "宫", "下腹坠痛"]
+    query_has_gynecology = any(t in query for t in gynecology_terms)
+    male_gender = gender_text in {"男", "男性", "male", "m"}
     for score, item in scored:
         if score < min_score:
             continue
         text = item["text"]
+        if any(t in text for t in gynecology_terms):
+            if male_gender or not query_has_gynecology:
+                continue
         if symptom_terms:
             hits = [t for t in symptom_terms if (t in text and not _is_negated(text, t))]
             if not hits:
@@ -779,7 +789,13 @@ def call_local_rag(
     )
     symptom_terms = _extract_symptom_terms(query)
     scored = _score_fused(query, index, top_k=top_k)
-    scored = _filter_by_symptom_terms(scored, symptom_terms, min_score=0.08)
+    scored = _filter_by_symptom_terms(
+        scored,
+        symptom_terms,
+        min_score=0.08,
+        query=query,
+        gender=str(fd.get("gender", "")),
+    )
     if not scored:
         # 即使无证据，也给出“按症状路由”的可读推理内容（证据链为空）
         obj = _fallback_no_evidence(symptom_terms)
@@ -789,12 +805,18 @@ def call_local_rag(
     top = _rebalance_levels(scored, top_k=top_k)
     matched_route = _match_symptom_route(query, symptom_terms)
     if matched_route and isinstance(matched_route.get("keywords"), list):
-        route_terms = [str(k) for k in matched_route.get("keywords", [])]
+        matched_keywords = [str(k) for k in matched_route.get("keywords", [])]
+        route_terms = [k for k in matched_keywords if k and k in query and not _is_negated(query, k)]
+        if not route_terms:
+            route_terms = matched_keywords
     else:
         route_terms = _matched_route_keywords(symptom_terms)
+    generic_route_terms = {"腹痛", "肚子疼", "肚子痛", "胃痛", "疼", "痛", "扭伤", "外伤"}
+    strict_route_terms = [t for t in route_terms if t not in generic_route_terms]
+    route_filter_terms = strict_route_terms or route_terms
     route_top = []
     for s, it in top:
-        if any(t in it["text"] for t in route_terms):
+        if any(t in it["text"] for t in route_filter_terms):
             route_top.append((s, it))
     if route_top:
         top = route_top
