@@ -1,0 +1,13 @@
+本目录用于申请书「中文少样本医疗数据集构建」的工程落地。
+
+当前已包含：
+- few_shot_examples.json：少样本 ICL 标准输出示范。
+- unlabeled_queries.jsonl：未标注问诊 query，可用于伪标签生成。
+- dataset_samples.jsonl：脱敏演示样例，每条包含主诉、现病史、标签、建议检查和证据层级。
+
+建议后续操作（与申请书实验方案一致）：
+1. 从公开集抽取子集：RAGCare-QA、cMedQA2 等，按重症/慢病/罕见病分层各保留若干条。
+2. 院内数据须脱敏、伦理审批后，再与指南条文、核心期刊摘要对齐标注。
+3. 将「病历摘要 + 标准 JSON 输出」导出为 few_shot_examples.json 中 examples 数组的条目，即可增强少样本 ICL，无需改 Python 代码结构。
+
+当前仓库通过 few_shot_examples.json 演示少样本提示格式；正式实验可替换该文件内容。

@@ -1,0 +1,174 @@
+{
+  "version": 1,
+  "description": "本地RAG症状路由配置。后续只需在本文件新增/修改 routes 条目，无需改 Python 代码。",
+  "routes": [
+    {
+      "keywords": ["皮疹", "瘙痒", "红肿", "荨麻疹"],
+      "primary_diagnosis": "初步判断：皮肤过敏/接触性皮炎等可能",
+      "differential_diagnosis": "鉴别：感染性皮疹、药疹、湿疹、系统性过敏反应",
+      "risk_alert": "若出现喉头紧缩、呼吸困难或全身迅速加重，需紧急就医",
+      "recommended_tests": "接触史/用药史评估，必要时血常规、IgE/过敏原筛查，皮肤科评估",
+      "treatment_plan": "停用可疑诱因，局部护理与抗过敏对症处理并复评"
+    },
+    {
+      "keywords": ["腹痛", "肚子疼", "胃痛"],
+      "primary_diagnosis": "初步判断：消化道问题可能，需进一步定位病因",
+      "differential_diagnosis": "鉴别：胃肠炎、消化性溃疡、胆胰疾病、阑尾炎等急腹症",
+      "risk_alert": "若持续加重、反跳痛、黑便/呕血或高热，建议及时就医",
+      "recommended_tests": "腹部查体，必要时血常规/CRP/电解质，腹部超声或CT",
+      "treatment_plan": "先补液与对症处理，再按检查结果决定专科处置"
+    },
+    {
+      "keywords": ["恶心", "呕吐", "腹泻", "便秘"],
+      "primary_diagnosis": "初步判断：胃肠功能紊乱或感染相关问题可能",
+      "differential_diagnosis": "鉴别：急性胃肠炎、药物不良反应、肠易激综合征等",
+      "risk_alert": "若持续呕吐无法进食、明显脱水或血便，需及时就医",
+      "recommended_tests": "水电解质评估、血常规，必要时粪便常规/培养",
+      "treatment_plan": "以补液和饮食调整为先，结合病因开展针对性治疗"
+    },
+    {
+      "keywords": ["咳嗽", "咳痰"],
+      "primary_diagnosis": "初步判断：呼吸道感染或气道高反应可能",
+      "differential_diagnosis": "鉴别：上呼吸道感染、支气管炎、肺炎、咳嗽变异性哮喘",
+      "risk_alert": "若出现气促、血氧下降、咯血或胸痛，建议及时就医",
+      "recommended_tests": "血常规、CRP，必要时胸片/CT与病原学检测",
+      "treatment_plan": "先对症止咳祛痰，依据检查结果决定抗感染/抗炎策略"
+    },
+    {
+      "keywords": ["胸闷", "气短", "呼吸困难", "喘", "喘憋", "憋气", "活动后气短"],
+      "primary_diagnosis": "初步判断：气道或心肺系统问题可能",
+      "differential_diagnosis": "鉴别：哮喘/慢阻肺加重、肺部感染、心功能异常等",
+      "risk_alert": "若静息呼吸困难、紫绀或氧饱和度下降，需急诊评估",
+      "recommended_tests": "血氧监测、心电图、胸片/CT，必要时动脉血气",
+      "treatment_plan": "优先评估氧合与通气状态，分层处理并动态复评"
+    },
+    {
+      "keywords": ["发热", "发烧", "寒战"],
+      "primary_diagnosis": "初步判断：感染性疾病可能，需定位感染灶",
+      "differential_diagnosis": "鉴别：呼吸道/泌尿道/消化道感染及非感染性发热",
+      "risk_alert": "若高热持续不退、意识改变或低血压，建议急诊",
+      "recommended_tests": "血常规、CRP/PCT，必要时血培养及相关部位检查",
+      "treatment_plan": "退热补液与病因评估并行，依据证据决定抗感染策略"
+    },
+    {
+      "keywords": ["头痛", "头晕", "说话不清楚", "言语不清", "口角歪斜", "偏瘫", "肢体无力", "手没力气", "意识不清"],
+      "primary_diagnosis": "初步判断：神经系统或血管相关问题需评估",
+      "differential_diagnosis": "鉴别：偏头痛、紧张性头痛、前庭功能问题、脑血管事件",
+      "risk_alert": "若突发剧烈头痛、偏瘫/言语障碍，需急诊排查卒中",
+      "recommended_tests": "神经系统查体、血压监测，必要时头颅CT/MRI",
+      "treatment_plan": "先评估危险信号，再进行对症治疗与病因处理"
+    },
+    {
+      "keywords": ["心悸", "胸痛", "胸前区疼", "胸口疼", "压榨样疼痛", "出汗", "冷汗", "放射痛"],
+      "primary_diagnosis": "初步判断：心血管相关症状需优先排查",
+      "differential_diagnosis": "鉴别：心律失常、冠脉缺血、焦虑相关症状等",
+      "risk_alert": "若胸痛持续>20分钟、出冷汗或放射痛，需急诊",
+      "recommended_tests": "心电图、肌钙蛋白、心肌酶，必要时心脏超声",
+      "treatment_plan": "先排除急危重心脏事件，再做进一步分层管理"
+    },
+    {
+      "keywords": ["尿频", "尿急", "尿痛", "血尿"],
+      "primary_diagnosis": "初步判断：泌尿系统感染或结石相关问题可能",
+      "differential_diagnosis": "鉴别：膀胱炎、肾盂肾炎、尿路结石等",
+      "risk_alert": "若高热腰痛、肉眼血尿或少尿，建议尽快就医",
+      "recommended_tests": "尿常规、尿培养，必要时泌尿系超声/CT",
+      "treatment_plan": "补液与症状控制并行，依据结果选择抗感染或专科处理"
+    },
+    {
+      "keywords": ["水肿", "少尿"],
+      "primary_diagnosis": "初步判断：肾脏或心功能异常可能",
+      "differential_diagnosis": "鉴别：肾病综合征、肾功能不全、心衰、内分泌因素",
+      "risk_alert": "若进行性加重伴呼吸困难，需及时就医",
+      "recommended_tests": "肾功能、电解质、尿蛋白定量，必要时心超",
+      "treatment_plan": "限制盐水摄入并尽快完善肾心功能评估"
+    },
+    {
+      "keywords": ["关节痛", "关节肿"],
+      "primary_diagnosis": "初步判断：炎症性或退行性关节病变可能",
+      "differential_diagnosis": "鉴别：类风湿、痛风、感染性关节炎、骨关节炎",
+      "risk_alert": "若单关节红肿热痛明显伴发热，警惕感染性关节炎",
+      "recommended_tests": "炎症指标、尿酸、自身抗体，必要时关节超声/穿刺",
+      "treatment_plan": "对症镇痛并结合风湿免疫专科评估病因"
+    },
+    {
+      "keywords": ["黄疸", "皮肤黄", "眼黄"],
+      "primary_diagnosis": "初步判断：肝胆系统异常可能",
+      "differential_diagnosis": "鉴别：肝炎、胆道梗阻、溶血等",
+      "risk_alert": "若伴意识改变、出血倾向或剧烈腹痛，需急诊",
+      "recommended_tests": "肝功能、胆红素分型、腹部超声，必要时MRCP/CT",
+      "treatment_plan": "先明确肝细胞性或胆汁淤积性损伤，再针对处理"
+    },
+    {
+      "keywords": ["咽痛", "喉咙痛", "嗓子疼", "嗓子痛", "咽喉痛"],
+      "primary_diagnosis": "初步判断：上呼吸道炎症可能",
+      "differential_diagnosis": "鉴别：病毒性咽炎、细菌性扁桃体炎、反流相关咽炎",
+      "risk_alert": "若吞咽困难明显或呼吸受限，需及时就医",
+      "recommended_tests": "咽部查体，必要时血常规与病原检测",
+      "treatment_plan": "对症镇痛补液，依据病因决定抗感染与否"
+    },
+    {
+      "keywords": ["鼻塞", "流涕", "流鼻涕", "清鼻涕", "打喷嚏", "感冒"],
+      "primary_diagnosis": "初步判断：过敏性鼻炎或上感可能",
+      "differential_diagnosis": "鉴别：过敏性鼻炎、病毒性鼻炎、鼻窦炎",
+      "risk_alert": "若高热、面部疼痛加重或症状迁延，建议复诊",
+      "recommended_tests": "鼻部查体，必要时过敏原筛查/鼻窦影像",
+      "treatment_plan": "先行鼻腔护理与对症药物，结合病程调整方案"
+    },
+    {
+      "keywords": ["失眠", "焦虑", "情绪低落"],
+      "primary_diagnosis": "初步判断：睡眠与情绪相关问题可能",
+      "differential_diagnosis": "鉴别：焦虑障碍、抑郁状态、应激反应、躯体化",
+      "risk_alert": "若出现自伤意念或明显功能受损，需及时精神专科评估",
+      "recommended_tests": "睡眠量表/情绪量表评估，必要时排除躯体病因",
+      "treatment_plan": "优先睡眠卫生和心理干预，必要时专科联合治疗"
+    },
+    {
+      "keywords": ["乏力", "食欲下降", "体重下降"],
+      "primary_diagnosis": "初步判断：慢性消耗性或内分泌代谢问题需排查",
+      "differential_diagnosis": "鉴别：慢性感染、甲状腺疾病、肿瘤相关消耗、贫血等",
+      "risk_alert": "若短期体重明显下降或持续恶化，建议系统评估",
+      "recommended_tests": "血常规、甲功、肝肾功能、营养指标，必要时影像筛查",
+      "treatment_plan": "先评估营养状态与基础代谢，再做病因导向检查"
+    },
+    {
+      "keywords": ["多饮", "多尿", "血糖高"],
+      "primary_diagnosis": "初步判断：糖代谢异常可能",
+      "differential_diagnosis": "鉴别：糖尿病、应激性高血糖、内分泌异常",
+      "risk_alert": "若出现呕吐、脱水、意识改变，警惕急性代谢并发症",
+      "recommended_tests": "空腹血糖、HbA1c、尿酮体、电解质",
+      "treatment_plan": "饮食管理与血糖监测并行，必要时内分泌专科调整方案"
+    },
+    {
+      "keywords": ["月经紊乱", "阴道出血", "下腹坠痛"],
+      "primary_diagnosis": "初步判断：妇科相关问题需评估",
+      "differential_diagnosis": "鉴别：功能失调性出血、盆腔炎、妊娠相关问题等",
+      "risk_alert": "若出血量大、晕厥或持续腹痛，需急诊妇科评估",
+      "recommended_tests": "妇科查体、血常规、妊娠试验，必要时盆腔超声",
+      "treatment_plan": "先稳定生命体征并明确出血/疼痛病因后处理"
+    },
+    {
+      "keywords": ["腰痛", "背痛"],
+      "primary_diagnosis": "初步判断：肌骨系统或泌尿系统问题可能",
+      "differential_diagnosis": "鉴别：腰肌劳损、椎间盘问题、肾绞痛、肾盂肾炎",
+      "risk_alert": "若伴神经缺损、发热或血尿，需及时就医",
+      "recommended_tests": "体格检查，必要时尿检与腰椎/泌尿系影像",
+      "treatment_plan": "先控制疼痛并评估神经和泌尿红旗征"
+    },
+    {
+      "keywords": ["抽搐", "意识障碍", "晕厥"],
+      "primary_diagnosis": "初步判断：神经系统急症需优先排查",
+      "differential_diagnosis": "鉴别：癫痫发作、脑血管事件、代谢紊乱、心源性晕厥",
+      "risk_alert": "属高风险症状，建议立即急诊处理",
+      "recommended_tests": "血糖、电解质、心电图、头颅影像，必要时脑电图",
+      "treatment_plan": "先保障气道循环与生命体征，再行病因分层"
+    },
+    {
+      "keywords": ["耳痛", "耳鸣", "听力下降"],
+      "primary_diagnosis": "初步判断：耳部炎症或听觉系统问题可能",
+      "differential_diagnosis": "鉴别：外耳道炎、中耳炎、突发性耳聋、梅尼埃病",
+      "risk_alert": "若突发听力明显下降，建议尽快耳鼻喉专科就诊",
+      "recommended_tests": "耳镜检查、听力学评估，必要时影像学检查",
+      "treatment_plan": "依据病因进行抗炎、改善循环或专科干预"
+    }
+  ]
+}

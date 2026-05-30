@@ -1,0 +1,112 @@
+{
+  "description": "少样本示范：与申请书「10-100 条标注」对应。当前为脱敏演示样例，用于约束 JSON 输出、风险提示和三级证据表达；正式实验可替换为公开数据集或院内脱敏标注。",
+  "examples": [
+    {
+      "input_summary": "青年男性，主诉发热伴咳嗽3天；现病史：体温最高38.5℃，干咳为主；问：初步考虑与检查建议。",
+      "output_json": {
+        "report": {
+          "primary_diagnosis": "急性上呼吸道感染（病毒性可能大，需鉴别肺部感染）",
+          "differential_diagnosis": "流感、支原体感染、细菌性肺炎早期",
+          "risk_alert": "若气促、血氧下降或持续高热超过3天须及时复诊或转诊。",
+          "recommended_tests": "血常规、CRP、必要时胸片或病原学筛查。",
+          "treatment_plan": "对症退热补液，观察病情变化，必要时在医生指导下抗感染。"
+        },
+        "traceability": {
+          "guideline_level": [
+            {
+              "title": "发热伴呼吸道症状基层诊疗相关要点",
+              "source": "临床指南（示例）",
+              "snippet": "急性发热伴咳嗽需结合体征与炎症指标评估感染部位与严重程度。",
+              "support_point": "支持先鉴别上呼吸道与下呼吸道，并给出检查阶梯。"
+            }
+          ],
+          "literature_level": [
+            {
+              "title": "社区发热患者门诊分流研究（示例）",
+              "source": "医学期刊摘要（示例）",
+              "snippet": "炎症标志物联合病史可提高感染风险分层效率。",
+              "support_point": "支持建议血常规与CRP作为基层初筛。"
+            }
+          ],
+          "case_level": [
+            {
+              "title": "相似门诊病例（脱敏示例）",
+              "source": "脱敏病历库（示例）",
+              "snippet": "青年发热咳嗽，多数为自限性上呼吸道感染经对症后缓解。",
+              "support_point": "支持以轻症对症与观察为主的处置路径。"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "input_summary": "中年女性，使用新护肤品后面部红肿瘙痒2天；问：是否过敏以及如何处理。",
+      "output_json": {
+        "report": {
+          "primary_diagnosis": "接触性皮炎/皮肤过敏可能性较大",
+          "differential_diagnosis": "需鉴别荨麻疹、药疹、感染性皮疹和湿疹急性发作",
+          "risk_alert": "若出现喘憋、喉头紧缩、全身风团或血压下降，应立即急诊处理。",
+          "recommended_tests": "皮损分布评估、接触史核对，必要时斑贴试验、IgE或过敏原筛查。",
+          "treatment_plan": "停用可疑产品，避免搔抓和刺激，按医嘱抗过敏及屏障修复，短期复评。"
+        },
+        "traceability": {
+          "guideline_level": [
+            {
+              "title": "皮肤过敏基层处理要点",
+              "source": "临床指南摘要（演示）",
+              "snippet": "面部红肿瘙痒需重点询问新化妆品、药物和食物接触史。",
+              "support_point": "支持将新护肤品接触史作为诊断线索。"
+            }
+          ],
+          "literature_level": [
+            {
+              "title": "化妆品相关接触性皮炎流行病学分析",
+              "source": "医学文献摘要（演示）",
+              "snippet": "香精、防腐剂等成分与面部接触性皮炎相关。",
+              "support_point": "支持停用可疑产品与后续过敏原评估。"
+            }
+          ],
+          "case_level": [
+            {
+              "title": "面部皮疹相似脱敏病例",
+              "source": "脱敏病例库（演示）",
+              "snippet": "患者使用新粉底后出现双颊红肿瘙痒，停用并治疗后缓解。",
+              "support_point": "与当前病史相似，支持接触性皮炎路径。"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "input_summary": "老年男性，活动后胸痛伴心悸，既往高血压；问：需要优先排查什么。",
+      "output_json": {
+        "report": {
+          "primary_diagnosis": "心血管高风险胸痛，急性冠脉综合征需优先排除",
+          "differential_diagnosis": "心绞痛、心肌梗死、心律失常、肺栓塞、胃食管反流相关胸痛",
+          "risk_alert": "若胸痛持续超过20分钟、伴冷汗/放射痛/气促，应立即急诊。",
+          "recommended_tests": "心电图、肌钙蛋白、心肌酶谱、血压和血氧监测，必要时心脏超声。",
+          "treatment_plan": "先按胸痛高风险流程分层，避免自行服药延误，完善检查后决定抗缺血或转诊方案。"
+        },
+        "traceability": {
+          "guideline_level": [],
+          "literature_level": [
+            {
+              "title": "急性胸痛门急诊分层研究",
+              "source": "医学文献摘要（演示）",
+              "snippet": "心电图与肌钙蛋白是胸痛首轮分层核心。",
+              "support_point": "支持将心电图和肌钙蛋白列为优先检查。"
+            }
+          ],
+          "case_level": [
+            {
+              "title": "活动后胸痛相似脱敏病例",
+              "source": "脱敏病例库（演示）",
+              "snippet": "劳累后胸前区压榨样疼痛，心电图ST-T改变。",
+              "support_point": "提示需要优先排除冠脉缺血。"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
